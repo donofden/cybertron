@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder("../../private-git", "/mnt/nfs/web", :nfs=>true, :nfs_export=>true, :linux__nfs_options => ['rw','no_subtree_check','all_squash','async'])
   config.vm.synced_folder("/tmp", "/hosttmp", :nfs=>true, :nfs_export=>true, :linux__nfs_options => ['rw','no_subtree_check','all_squash','async'])
 
-  # config.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = "vagrant/ansible/all.yml"
-  # end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "vagrant/ansible/all.yml"
+  end
 end

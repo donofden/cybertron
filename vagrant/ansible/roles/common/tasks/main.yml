@@ -1,0 +1,26 @@
+---
+- name: Update apt
+  become: yes
+  apt: update_cache=yes
+
+- name: Install common packages for the platform
+  become: yes
+  apt:
+    name: "{{common_packages}}"
+    state: latest
+    force: yes
+
+- name: Copy bash alias file
+  copy: src=.bash_aliases dest={{ home_dir }}
+
+- name: Set location to Asia/Chennai
+  become: yes
+  file: src=/usr/share/zoneinfo/Asia/Chennai dest=/etc/localtime state=link force=yes
+
+- name: Add vagrant user to www-data group
+  become: yes
+  command: /usr/sbin/adduser vagrant www-data
+
+- name: Add www-data user to vagrant group
+  become: yes
+  command: /usr/sbin/adduser www-data vagrant

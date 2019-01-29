@@ -1,0 +1,7 @@
+---
+common_packages:
+  - build-essential
+  - vim
+  - curl
+  - git-core
+  - unzip

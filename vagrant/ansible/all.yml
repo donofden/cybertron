@@ -3,3 +3,4 @@
     - all
   roles:
     - common
+    - jenkins

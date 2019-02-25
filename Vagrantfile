@@ -3,6 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "20190119.0.0"
   config.vm.hostname = "cybertron"
   config.vm.network :private_network, ip: "192.168.56.202"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.ssh.forward_agent = true
 
   config.vm.provider "virtualbox" do |vb|

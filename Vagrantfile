@@ -1,5 +1,6 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.box_version = "20190119.0.0"
   config.vm.hostname = "cybertron"
   config.vm.network :private_network, ip: "192.168.56.202"
   config.ssh.forward_agent = true

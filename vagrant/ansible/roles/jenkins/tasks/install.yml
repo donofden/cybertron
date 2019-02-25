@@ -1,0 +1,60 @@
+---
+- name: Update apt
+  become: yes
+  apt: update_cache=yes
+
+- name: Add Jenkins apt repository key.
+  become: yes
+  apt_key:
+    url: "{{ jenkins_repo_key_url }}"
+    state: present
+
+- name: Add Jenkins apt repository.
+  become: yes
+  apt_repository:
+    repo: "{{ jenkins_repo_url }}"
+    state: present
+    update_cache: true
+  when: jenkins_repo_url != ""
+  tags: ['skip_ansible_lint']
+
+- name: Download specific Jenkins version.
+  become: yes
+  get_url:
+    url: "{{ jenkins_pkg_url }}/jenkins_{{ jenkins_version }}_all.deb"
+    dest: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+  when: jenkins_version is defined
+
+- name: Check if we downloaded a specific version of Jenkins.
+  become: yes
+  stat:
+    path: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+  register: specific_version
+  when: jenkins_version is defined
+
+- name: Install our specific version of Jenkins.
+  become: yes
+  apt:
+    deb: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+    state: present
+  when: jenkins_version is defined and specific_version.stat.exists
+
+- name: Ensure Jenkins is installed.
+  become: yes
+  apt:
+    name: jenkins
+    state: "{{ jenkins_package_state }}"
+  notify: configure default users
+
+- name: Sleep for 30 seconds and continue with play
+  wait_for: timeout=30
+
+- name: Get init password Jenkins
+  become: yes
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: Print init password Jenkins
+  debug:
+    var: result.stdout

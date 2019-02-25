@@ -1,3 +1,5 @@
+[![HitCount](http://hits.dwyl.io/donofden/cybertron.svg)](http://hits.dwyl.io/donofden/cybertron)
+
 # cybertron
 
 This is MY VM where Im playing around with Ansible and understand the IT automation deploy.

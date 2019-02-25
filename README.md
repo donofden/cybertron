@@ -17,3 +17,21 @@ The idea is to run achieve the following:
 - Install Ubuntu and required dependencies for all my repos
 - Install Jenkins and configure jobs
 - Build code from Git
+
+Can get Jenkins Admin password After successful completion:
+
+```bash
+ ______________________________________________ 
+< TASK [jenkins : Print init password Jenkins] >
+ ---------------------------------------------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+ok: [default] => {
+    "result.stdout": "1f65adace245428b9ef61c198d9eb57e"
+}
+ _____
+```

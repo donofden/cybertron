@@ -37,4 +37,5 @@
   file: path=/var/lock/apache2 group=vagrant owner=vagrant
 
 - name: Start Apache service
+  become: yes
   service: name=apache2 state=started enabled=true

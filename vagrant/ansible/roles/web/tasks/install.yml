@@ -1,0 +1,40 @@
+---
+- name: Add repository to install last Apache version
+  apt_repository:
+    repo="{{ apache_repository }}"
+    update_cache=yes
+  when: apache_repository != false
+
+- name: Install packages.
+  become: yes
+  apt:
+    update_cache=yes
+    cache_valid_time=3600
+    pkg="{{ apache_install }}"
+    state=present
+  when: apache_install != false
+
+- name: Enable required Apache modules
+  become: yes
+  apache2_module: name={{ item }} state=present
+  with_items: "{{ apache_module_enable }}"
+  when: apache_module_enable != false
+
+- name: Copy custom configuration for Apache
+  become: yes
+  copy: src=httpd.conf dest=/etc/apache2/httpd.conf
+  notify:
+    - Restart Apache
+
+- name: Set Apache to run as vagrant user/group
+  become: yes
+  replace: dest=/etc/apache2/envvars regexp='www-data' replace='vagrant'
+  notify:
+    - Restart Apache
+
+- name: Change owner of Apache lock file to vagrant user
+  become: yes
+  file: path=/var/lock/apache2 group=vagrant owner=vagrant
+
+- name: Start Apache service
+  service: name=apache2 state=started enabled=true

@@ -1,0 +1,10 @@
+---
+- name: Copy cybertron web page to apache root
+  become: yes
+  copy: src={{ item }} dest=/var/www/html/
+  with_fileglob:
+    - cybertron-home/*
+
+- name: clone basic html template
+  become: yes
+  git: repo=https://github.com/do-community/ansible-apache-tutorial.git dest=/var/www/html/example update=no

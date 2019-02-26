@@ -3,4 +3,5 @@
     - all
   roles:
     - common
+    - web
     - jenkins

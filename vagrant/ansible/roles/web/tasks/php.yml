@@ -1,0 +1,25 @@
+---
+- name: Add PHP repository
+  apt_repository: repo=ppa:ondrej/php
+  become: yes
+
+- name: Update apt
+  become: yes
+  apt: update_cache=yes
+
+- name: Install packages
+  become: yes
+  apt:
+    name: "{{apt_packages_php}}"
+    state: latest
+    force: yes
+
+- name: Create PHP log folder
+  become: yes
+  file: path=/var/log/php state=directory mode=0777
+
+- name: Enable PHP extensions
+  become: yes
+  shell: phpenmod emis mcrypt imap bcmath gmp
+  notify:
+    - Restart Apache
